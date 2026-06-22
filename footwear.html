@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BYLT QA — Footwear</title>
+<style>*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f3;color:#1a1a1a}
+header{background:#111;color:#fff;padding:12px 20px;display:flex;align-items:center;gap:12px}
+header h1{font-size:14px;font-weight:600}
+.nav{background:#fff;border-bottom:1px solid #e0e0e0;padding:8px 20px;display:flex;gap:6px;flex-wrap:wrap}
+.nav a{padding:4px 10px;border:1px solid #ddd;border-radius:5px;font-size:12px;text-decoration:none;color:#444}
+.nav a.active{background:#111;color:#fff;border-color:#111}
+.tb{background:#fff;border-bottom:1px solid #e0e0e0;padding:8px 20px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.tb input,.tb select{padding:6px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px;outline:none;font-family:inherit}
+.cnt{font-size:12px;color:#888;margin-left:auto}
+.alert{background:#fff3cd;border-bottom:1px solid #ffc107;padding:8px 20px;font-size:12px;color:#856404}
+.fbar{background:#fff3cd;border-bottom:1px solid #ffc107;padding:8px 20px;font-size:12px;color:#856404;display:none;align-items:center;gap:10px}
+.fbar.on{display:flex}
+.ebtn{background:#111;color:#fff;border:none;padding:6px 14px;border-radius:5px;font-size:12px;cursor:pointer;font-family:inherit}
+.cbtn{background:#888;color:#fff;border:none;padding:6px 14px;border-radius:5px;font-size:12px;cursor:pointer;font-family:inherit}
+.pager{padding:8px 20px;display:flex;gap:8px;align-items:center;background:#fff;border-bottom:1px solid #eee;font-size:12px}
+.pager button{padding:4px 12px;border:1px solid #ddd;border-radius:5px;background:#fff;cursor:pointer;font-size:12px;font-family:inherit}
+.pager button:disabled{opacity:.4;cursor:not-allowed}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;padding:16px 20px}
+.card{background:#fff;border-radius:8px;border:1px solid #e8e8e8;overflow:hidden}
+.card.flagged{border:2px solid #e53935;background:#fff8f8}
+.card.hidden{display:none}
+.iw{width:100%;aspect-ratio:1;overflow:hidden;background:#f0f0f0;position:relative}
+.iw img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .15s}
+.iw img.l{opacity:1}
+.no-img{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:11px}
+.flatb{position:absolute;top:5px;right:5px;background:rgba(27,94,32,.85);color:#fff;font-size:9px;font-weight:700;padding:2px 5px;border-radius:3px}
+.vb{position:absolute;top:5px;left:5px;background:rgba(229,57,53,.9);color:#fff;font-size:9px;font-weight:700;padding:2px 5px;border-radius:3px}
+.ci{padding:7px 9px 9px}
+.cs{font-size:11px;font-weight:600;word-break:break-all;line-height:1.3;margin-bottom:1px}
+.cc{font-size:12px;font-weight:500;color:#333;margin-bottom:1px}
+.cn{font-size:10px;color:#aaa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:5px}
+.reason{font-size:10px;color:#c62828;background:#fff0f0;border-radius:3px;padding:3px 6px;margin-bottom:5px;line-height:1.4}
+.fb-btn{width:100%;padding:5px;border:1px solid #e0e0e0;border-radius:5px;background:#f8f8f8;font-size:11px;cursor:pointer;font-family:inherit;color:#444}
+.fb-btn.auto{background:#fde;border-color:#e53935;color:#c62828;font-weight:600}</style>
+</head>
+<body>
+<header>
+  <div style="font-size:10px;opacity:.4;letter-spacing:.06em">BYLT BASICS</div>
+  <h1>Image QA — Footwear</h1>
+  <span style="margin-left:auto;font-size:11px;opacity:.5">15 styles · 3 auto-flagged</span>
+</header>
+<div class="nav"><a href="index.html">All families</a>
+<a href="core_styles.html" class="">Core Styles (266)</a>
+<a href="men_tops.html" class="">Men Tops (2761)</a>
+<a href="men_button_downs.html" class="">Men Button Downs (691)</a>
+<a href="men_jackets.html" class="">Men Jackets (272)</a>
+<a href="men_pants_and_joggers.html" class="">Men Pants & Joggers (422)</a>
+<a href="men_shorts.html" class="">Men Shorts (470)</a>
+<a href="men_underwear.html" class="">Men Underwear (142)</a>
+<a href="womens.html" class="">Women's (391)</a>
+<a href="kids.html" class="">Kids (70)</a>
+<a href="footwear.html" class="active">Footwear (15)</a>
+<a href="other.html" class="">Other (1109)</a>
+</div>
+<div class='alert'>⚠ <strong>3 images auto-flagged</strong> — review and unflag anything that looks correct.</div>
+<div class="tb">
+  <input id="sq" type="text" placeholder="Search SKU or color..." oninput="filter()" style="width:200px">
+  <select id="flg" onchange="filter()">
+    <option value="">Show all</option>
+    <option value="auto">Auto-flagged only</option>
+    <option value="manual">Manually flagged</option>
+    <option value="ok">Not flagged</option>
+  </select>
+  <select id="imgf" onchange="filter()">
+    <option value="">All images</option>
+    <option value="flat">Flat lay only</option>
+    <option value="noflat">No flat lay</option>
+  </select>
+  <div class="cnt" id="cnt"></div>
+</div>
+<div class="fbar" id="fbar">
+  <span id="fcount">0 flagged</span>
+  <button class="ebtn" onclick="exportF()">Export CSV</button>
+  <button class="cbtn" onclick="location.reload()">Reset</button>
+</div>
+<div class="pager">
+  <button id="pbtn" onclick="goPage(-1)" disabled>← Prev</button>
+  <span id="pinfo" style="color:#888;margin:0 6px"></span>
+  <button id="nbtn" onclick="goPage(1)">Next →</button>
+  <span style="color:#aaa;margin-left:8px">300 per page</span>
+</div>
+<div class="grid" id="grid"><div class="card" data-ck="AFW23012_001" data-color="black" data-flat="true" data-auto="false" data-img="https://cdn.shopify.com/s/files/1/1464/5034/files/240909_LidoBeltBlack_0062_2c992b59-31fd-4a43-8233-93dcb29f7d6a.jpg?v=1740783503"><div class="iw"><img loading="lazy" src="https://cdn.shopify.com/s/files/1/1464/5034/files/240909_LidoBeltBlack_0062_2c992b59-31fd-4a43-8233-93dcb29f7d6a.jpg?v=1740783503" alt="AFW23012_001" onload="this.classList.add('l')" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/><div class="no-img" style="display:none">no img</div><div class="flatb">FLAT</div></div><div class="ci"><div class="cs">AFW23012_001</div><div class="cc">Black</div><div class="cn" title="Lido Belt Black L/XL (Alpha)">Lido Belt Black L/XL (Alpha)</div><button class="fb-btn" onclick="tf(this)">Flag this image</button></div></div>
+<div class="card flagged" data-ck="AFW23012_404" data-color="navy" data-flat="true" data-auto="true" data-img="https://cdn.shopify.com/s/files/1/1464/5034/files/240909_LidoBeltStorm_0073.jpg?v=1759425510"><div class="iw"><img loading="lazy" src="https://cdn.shopify.com/s/files/1/1464/5034/files/240909_LidoBeltStorm_0073.jpg?v=1759425510" alt="AFW23012_404" onload="this.classList.add('l')" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/><div class="no-img" style="display:none">no img</div><div class="flatb">FLAT</div></div><div class="ci"><div class="cs">AFW23012_404</div><div class="cc">Navy</div><div class="cn" title="Lido Belt Navy L/XL (Alpha)">Lido Belt Navy L/XL (Alpha)</div><div class="reason">Image looks charcoal but color is &quot;Navy&quot;</div><button class="fb-btn auto" onclick="tf(this)">✓ Auto-flagged</button></div></div>
+<div class="card flagged" data-ck="AFW24001_WHT/WHT" data-color="white" data-flat="false" data-auto="true" data-img="https://cdn.shopify.com/s/files/1/1464/5034/files/RETRODAYLOWSUEDE-DRIFTWOOD-SHOT4.jpg?v=1763512503"><div class="iw"><img loading="lazy" src="https://cdn.shopify.com/s/files/1/1464/5034/files/RETRODAYLOWSUEDE-DRIFTWOOD-SHOT4.jpg?v=1763512503" alt="AFW24001_WHT/WHT" onload="this.classList.add('l')" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/><div class="no-img" style="display:none">no img</div></div><div class="ci"><div class="cs">AFW24001_WHT/WHT</div><div class="cc">White</div><div class="cn" title="Retroday Low+ White / White 10">Retroday Low+ White / White 10</div><div class="reason">Image looks driftwood but color is &quot;White&quot;</div><button class="fb-btn auto" onclick="tf(this)">✓ Auto-flagged</button></div></div>
+<div class="card" data-ck="AFW24002_BLK/WHT" data-color="black-white" data-flat="false" data-auto="false" data-img="https://cdn.shopify.com/s/files/1/1464/5034/files/RETRODAYLOW_WHITE-SHOT1_c76de16f-cde8-47a6-a264-4b94644c5860.jpg?v=1776290104"><div class="iw"><img loading="lazy" src="https://cdn.shopify.com/s/files/1/1464/5034/files/RETRODAYLOW_WHITE-SHOT1_c76de16f-cde8-47a6-a264-4b94644c5860.jpg?v=1776290104" alt="AFW24002_BLK/WHT" onload="this.classList.add('l')" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/><div class="no-img" style="display:none">no img</div></div><div class="ci"><div class="cs">AFW24002_BLK/WHT</div><div class="cc">Black-White</div><div class="cn" title="Retroday Low Blend Black / White 10">Retroday Low Blend Black / White 10</div><button class="fb-btn" onclick="tf(this)">Flag this image</button></div></div>
+<div class="card" data-ck="AFW24003_DOV/DOV" data-color="dove" data-flat="true" data-auto="false" data-img="https://cdn.shopify.com/s/files/1/1464/5034/files/240731_RetrodayLowSuedeDove_0061_bb68be22-cdd2-4e07-87a2-c9e4c50cbdb0.jpg?v=1746054287"><div class="iw"><img loading="lazy" src="https://cdn.shopify.com/s/files/1/1464/5034/files/240731_RetrodayLowSuedeDove_0061_bb68be22-cdd2-4e07-87a2-c9e4c50cbdb0.jpg?v=1746054287" alt="AFW24003_DOV/DOV" onload="this.classList.add('l')" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/><div class="no-img" style="display:none">no img</div><div class="flatb">FLAT</div></div><div class="ci"><div class="cs">AFW24003_DOV/DOV</div><div class="cc">Dove</div><div class="cn" title="Retroday Low Suede Dove / Dove 10">Retroday Low Suede Dove / Dove 10</div><button class="fb-btn" onclick="tf(this)">Flag this image</button></div></div>
+<div class="card flagged" data-ck="AFW24003_DRW/DRW" data-color="driftwood" data-flat="false" data-auto="true" data-img="https://cdn.shopify.com/s/files/1/1464/5034/files/RETRODAYLOWBLEND-BLACK-SHOT2.jpg?v=1776290104"><div class="iw"><img loading="lazy" src="https://cdn.shopify.com/s/files/1/1464/5034/files/RETRODAYLOWBLEND-BLACK-SHOT2.jpg?v=1776290104" alt="AFW24003_DRW/DRW" onload="this.classList.add('l')" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/><div class="no-img" style="display:none">no img</div></div><div class="ci"><div class="cs">AFW24003_DRW/DRW</div><div class="cc">Driftwood</div><div class="cn" title="Retroday Low Suede Driftwood / Driftwood 10">Retroday Low Suede Driftwood / Driftwood 10</div><div class="reason">Image looks black but color is &quot;Driftwood&quot;</div><button class="fb-btn auto" onclick="tf(this)">✓ Auto-flagged</button></div></div>
+<div class="card" data-ck="AFW24004_WHT/WHT" data-color="white" data-flat="false" data-auto="false" data-img="https://cdn.shopify.com/s/files/1/1464/5034/files/RETRODAYMYDSUEDE-DOVE-SHOT2.jpg?v=1776804020"><div class="iw"><img loading="lazy" src="https://cdn.shopify.com/s/files/1/1464/5034/files/RETRODAYMYDSUEDE-DOVE-SHOT2.jpg?v=1776804020" alt="AFW24004_WHT/WHT" onload="this.classList.add('l')" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/><div class="no-img" style="display:none">no img</div></div><div class="ci"><div class="cs">AFW24004_WHT/WHT</div><div class="cc">White</div><div class="cn" title="Retroday MYD+ White / White 10">Retroday MYD+ White / White 10</div><button class="fb-btn" onclick="tf(this)">Flag this image</button></div></div>
+<div class="card" data-ck="AFW24005_BLK/WHT" data-color="black-white" data-flat="false" data-auto="false" data-img="https://cdn.shopify.com/s/files/1/1464/5034/files/RETRODAYMYDSHOE-BLACK-SHOT4.jpg?v=1776804020"><div class="iw"><img loading="lazy" src="https://cdn.shopify.com/s/files/1/1464/5034/files/RETRODAYMYDSHOE-BLACK-SHOT4.jpg?v=1776804020" alt="AFW24005_BLK/WHT" onload="this.classList.add('l')" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/><div class="no-img" style="display:none">no img</div></div><div class="ci"><div class="cs">AFW24005_BLK/WHT</div><div class="cc">Black-White</div><div class="cn" title="Retroday MYD Blend Black / White 10">Retroday MYD Blend Black / White 10</div><button class="fb-btn" onclick="tf(this)">Flag this image</button></div></div>
+<div class="card" data-ck="AFW24006_DOV/DOV" data-color="dove" data-flat="false" data-auto="false" data-img="https://cdn.shopify.com/s/files/1/1464/5034/files/RETRODAYMYD_SHOE-WHITE-SHOT1.jpg?v=1776804020"><div class="iw"><img loading="lazy" src="https://cdn.shopify.com/s/files/1/1464/5034/files/RETRODAYMYD_SHOE-WHITE-SHOT1.jpg?v=1776804020" alt="AFW24006_DOV/DOV" onload="this.classList.add('l')" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/><div class="no-img" style="display:none">no img</div></div><div class="ci"><div class="cs">AFW24006_DOV/DOV</div><div class="cc">Dove</div><div class="cn" title="Retroday MYD Suede Dove / Dove 10">Retroday MYD Suede Dove / Dove 10</div><button class="fb-btn" onclick="tf(this)">Flag this image</button></div></div>
+<div class="card" data-ck="AFW24007_BLK/BLK" data-color="black" data-flat="false" data-auto="false" data-img="https://cdn.shopify.com/s/files/1/1464/5034/files/LUXLOW_BLACK-SHOT1_e2404807-da80-45bd-91e8-190f64333f8a.jpg?v=1767811775"><div class="iw"><img loading="lazy" src="https://cdn.shopify.com/s/files/1/1464/5034/files/LUXLOW_BLACK-SHOT1_e2404807-da80-45bd-91e8-190f64333f8a.jpg?v=1767811775" alt="AFW24007_BLK/BLK" onload="this.classList.add('l')" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/><div class="no-img" style="display:none">no img</div></div><div class="ci"><div class="cs">AFW24007_BLK/BLK</div><div class="cc">Black</div><div class="cn" title="LUX Low+ Black / Black 10">LUX Low+ Black / Black 10</div><button class="fb-btn" onclick="tf(this)">Flag this image</button></div></div>
+<div class="card" data-ck="AFW24007_BLK/WHT" data-color="black-white" data-flat="false" data-auto="false" data-img="https://cdn.shopify.com/s/files/1/1464/5034/files/LUXLOW_BLACK-WHITE-SHOT2.jpg?v=1767811775"><div class="iw"><img loading="lazy" src="https://cdn.shopify.com/s/files/1/1464/5034/files/LUXLOW_BLACK-WHITE-SHOT2.jpg?v=1767811775" alt="AFW24007_BLK/WHT" onload="this.classList.add('l')" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/><div class="no-img" style="display:none">no img</div></div><div class="ci"><div class="cs">AFW24007_BLK/WHT</div><div class="cc">Black-White</div><div class="cn" title="LUX Low+ Black / White 10">LUX Low+ Black / White 10</div><button class="fb-btn" onclick="tf(this)">Flag this image</button></div></div>
+<div class="card" data-ck="AFW24007_WHT/WHT" data-color="white" data-flat="false" data-auto="false" data-img="https://cdn.shopify.com/s/files/1/1464/5034/files/LUXLOW_WHITE-SHOT4.jpg?v=1763408521"><div class="iw"><img loading="lazy" src="https://cdn.shopify.com/s/files/1/1464/5034/files/LUXLOW_WHITE-SHOT4.jpg?v=1763408521" alt="AFW24007_WHT/WHT" onload="this.classList.add('l')" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/><div class="no-img" style="display:none">no img</div></div><div class="ci"><div class="cs">AFW24007_WHT/WHT</div><div class="cc">White</div><div class="cn" title="LUX Low+ White / White 10">LUX Low+ White / White 10</div><button class="fb-btn" onclick="tf(this)">Flag this image</button></div></div>
+<div class="card" data-ck="AFW24009_BLK/WHT" data-color="black-white" data-flat="false" data-auto="false" data-img="https://cdn.shopify.com/s/files/1/1464/5034/files/LUX-MYD_BLACK-SHOT2.jpg?v=1763512664"><div class="iw"><img loading="lazy" src="https://cdn.shopify.com/s/files/1/1464/5034/files/LUX-MYD_BLACK-SHOT2.jpg?v=1763512664" alt="AFW24009_BLK/WHT" onload="this.classList.add('l')" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/><div class="no-img" style="display:none">no img</div></div><div class="ci"><div class="cs">AFW24009_BLK/WHT</div><div class="cc">Black-White</div><div class="cn" title="LUX MYD+ Black / White 10">LUX MYD+ Black / White 10</div><button class="fb-btn" onclick="tf(this)">Flag this image</button></div></div>
+<div class="card" data-ck="AFW24009_WHT/WHT" data-color="white" data-flat="false" data-auto="false" data-img="https://cdn.shopify.com/s/files/1/1464/5034/files/LUX-MYD_WHITE-SHOT1.jpg?v=1763487743"><div class="iw"><img loading="lazy" src="https://cdn.shopify.com/s/files/1/1464/5034/files/LUX-MYD_WHITE-SHOT1.jpg?v=1763487743" alt="AFW24009_WHT/WHT" onload="this.classList.add('l')" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/><div class="no-img" style="display:none">no img</div></div><div class="ci"><div class="cs">AFW24009_WHT/WHT</div><div class="cc">White</div><div class="cn" title="LUX MYD+ White / White 10">LUX MYD+ White / White 10</div><button class="fb-btn" onclick="tf(this)">Flag this image</button></div></div>
+<div class="card" data-ck="ASS24001_001" data-color="black" data-flat="false" data-auto="false" data-img="https://cdn.shopify.com/s/files/1/1464/5034/files/240429_FlipFlopV1Black0187.jpg?v=1759470866"><div class="iw"><img loading="lazy" src="https://cdn.shopify.com/s/files/1/1464/5034/files/240429_FlipFlopV1Black0187.jpg?v=1759470866" alt="ASS24001_001" onload="this.classList.add('l')" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/><div class="no-img" style="display:none">no img</div></div><div class="ci"><div class="cs">ASS24001_001</div><div class="cc">Black</div><div class="cn" title="BYLT Sandal Black 10">BYLT Sandal Black 10</div><button class="fb-btn" onclick="tf(this)">Flag this image</button></div></div></div>
+<script>const PER=300;
+let page=0,visible=[],allCards=[],manual=new Set();
+
+function isAuto(c){return c.dataset.auto==='true';}
+function isFlagged(c){return c.classList.contains('flagged');}
+
+function updateBar(){
+  const n=allCards.filter(c=>isFlagged(c)).length;
+  document.getElementById('fcount').textContent=n+' flagged';
+  document.getElementById('fbar').classList.toggle('on',n>0);
+}
+
+function filter(){
+  const q=document.getElementById('sq').value.toLowerCase().trim();
+  const flg=document.getElementById('flg').value;
+  const imgf=document.getElementById('imgf').value;
+  visible=allCards.filter(c=>{
+    if(q&&!c.dataset.ck.toLowerCase().includes(q)&&!c.dataset.color.includes(q))return false;
+    if(flg==='auto'&&!isAuto(c))return false;
+    if(flg==='manual'&&!manual.has(c.dataset.ck))return false;
+    if(flg==='ok'&&isFlagged(c))return false;
+    if(imgf==='flat'&&c.dataset.flat!=='true')return false;
+    if(imgf==='noflat'&&c.dataset.flat==='true')return false;
+    return true;
+  });
+  page=0;render();
+}
+
+function render(){
+  allCards.forEach(c=>c.classList.add('hidden'));
+  const start=page*PER;
+  visible.slice(start,start+PER).forEach(c=>c.classList.remove('hidden'));
+  document.getElementById('cnt').textContent=visible.length.toLocaleString()+' styles';
+  document.getElementById('pinfo').textContent='Page '+(page+1)+' of '+Math.max(1,Math.ceil(visible.length/PER));
+  document.getElementById('pbtn').disabled=page===0;
+  document.getElementById('nbtn').disabled=start+PER>=visible.length;
+  updateBar();
+  window.scrollTo(0,0);
+}
+
+function goPage(d){page=Math.max(0,Math.min(page+d,Math.ceil(visible.length/PER)-1));render();}
+
+function tf(btn){
+  const card=btn.closest('.card');
+  const ck=card.dataset.ck;
+  const wasAuto=isAuto(card);
+  if(isFlagged(card)){
+    card.classList.remove('flagged');
+    manual.delete(ck);
+    btn.textContent=wasAuto?'✓ Auto-flagged':'Flag this image';
+    btn.className='fb-btn'+(wasAuto?' auto':'');
+  }else{
+    card.classList.add('flagged');
+    manual.add(ck);
+    btn.textContent='✓ Flagged';
+    btn.className='fb-btn auto';
+  }
+  updateBar();
+}
+
+function exportF(){
+  const flaggedCards=allCards.filter(c=>isFlagged(c));
+  if(!flaggedCards.length)return alert('No items flagged yet.');
+  const rows=['Color SKU,Color Name,Flag Reason,Image URL'];
+  flaggedCards.forEach(c=>{
+    const r=c.querySelector('.reason');
+    rows.push('"'+c.dataset.ck+'","'+c.dataset.color+'","'+(r?r.textContent:'manual')+'","'+c.dataset.img+'"');
+  });
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([rows.join('\n')],{type:'text/csv'}));
+  a.download='BYLT_flagged_images.csv';a.click();
+}
+
+// Init after DOM ready
+window.addEventListener('DOMContentLoaded',()=>{
+  allCards=Array.from(document.querySelectorAll('.card'));
+  filter();
+});</script>
+</body>
+</html>
